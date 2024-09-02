@@ -1,0 +1,31 @@
+name: GHA workflow command No.2
+
+on:
+  workflow_dispatch:
+
+env:
+    ACTIONS_STEP_DEBUG: true
+
+jobs:
+  test-workflow-command:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'poetry'
+      - name: Setup Python Requirements
+        run: |
+          poetry install --no-root
+      - name: test-workflow-command
+        continue-on-error: true
+        run: |
+          poetry run python apps/workflow-command2.py
